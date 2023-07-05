@@ -1,0 +1,22 @@
+package com.redis.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.redis.entity.Student;
+import com.redis.repository.StudentRepo;
+
+public class StudentService {
+	
+	@Autowired
+	StudentRepo studentRepo;
+	
+	public Student addStudent(Student s)
+	{
+	    return 	studentRepo.save(s);
+	}
+
+	public Student getStudentbyId(Integer id )
+	{
+		return studentRepo.findById(id).orElseThrow();
+	}
+}

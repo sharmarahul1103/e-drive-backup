@@ -1,0 +1,5 @@
+package com.Security.Repository;
+
+public interface UserRepository {
+
+}

@@ -1,0 +1,32 @@
+package com.Security.Configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.Security.Entity.UserInfo;
+
+@Configuration
+public class Config {
+	
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
+	{
+		return httpSecurity.csrf(demo-> demo.disable()).build();
+	}
+	
+	@Bean
+	UserDetailsService userDetailsService()
+	{
+		
+		UserInfo userInfo=UserInfo.builder().username("rahul").password("1234").build();
+		System.out.println("Userdetails created"+userInfo.getUsername()+"--"+userInfo.getPassword()+"--"+userInfo.getRole());
+		return new InMemoryUserDetailsManager(userInfo);
+		
+	}
+
+	 
+}

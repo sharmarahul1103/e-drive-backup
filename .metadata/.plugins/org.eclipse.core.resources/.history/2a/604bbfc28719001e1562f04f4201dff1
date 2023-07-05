@@ -1,0 +1,21 @@
+package net.javaguides.springboot.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Recent_change")
+public class WikiMediaData {
+  
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+ 
+	@Lob
+	private String wikiEventData;
+  
+}

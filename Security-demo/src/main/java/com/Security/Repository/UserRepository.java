@@ -1,0 +1,13 @@
+package com.Security.Repository;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.Security.Entity.UserInfo;
+
+
+public interface UserRepository  extends JpaRepository<UserInfo, Integer>{
+
+	UserInfo findByusername(String name);
+
+}

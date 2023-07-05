@@ -1,0 +1,42 @@
+package com.redis.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.redis.Service.StudentService;
+import com.redis.entity.Student;
+
+@RestController
+@EnableCaching
+public class StudentController {
+	
+	@Autowired
+	StudentService studentService;
+	
+	@PostMapping("/add")
+	public ResponseEntity<Student> addStudent(@RequestBody Student s)
+	{
+	Student student=studentService.addStudent(s);
+	return ResponseEntity.ok(student);
+	}
+	
+	
+	@GetMapping("/find/{id}")
+	@Cacheable(cacheNames = "cache1")
+	public ResponseEntity<Student> findStudent(@PathVariable("id") Integer id)
+	{
+		Student s=studentService.getStudentbyId(id);
+		return ResponseEntity.ok(s);
+	}
+	
+	
+	
+
+}

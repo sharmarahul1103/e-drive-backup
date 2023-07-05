@@ -1,0 +1,6 @@
+spring.kafka.producer.bootstrap-servers=localhost:9092
+spring.kafka.producer.group-id=producer1
+spring.kafka.producer.auto-offset-reset=earliest
+spring.kafka.producer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.producer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+

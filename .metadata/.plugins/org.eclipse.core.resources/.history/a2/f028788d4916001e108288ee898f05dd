@@ -1,0 +1,38 @@
+package com.Security.Configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.Security.Entity.Roles;
+import com.Security.Entity.UserInfo;
+
+@Configuration
+public class Config {
+	
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
+	{
+		return httpSecurity.csrf(demo-> demo.disable()).authorizeHttpRequests(request->{
+			
+		 request.requestMatchers(HttpMethod.GET,"/test").hasRole("ROLE_ADMIN");
+		 request.requestMatchers(HttpMethod.POST, "/addStudent").hasRole("ADMIN");
+		}).build();
+	}
+	
+	@Bean
+	UserDetailsService userDetailsService()
+	{
+		
+		UserInfo userInfo=UserInfo.builder().username("rahul").password("1234").role(Roles.ADMIN).build();
+		System.out.println("Userdetails created-----"+userInfo.getUsername()+"--"+userInfo.getPassword()+"--"+userInfo.getRole());
+		return new InMemoryUserDetailsManager(userInfo);
+		
+	}
+
+	 
+}

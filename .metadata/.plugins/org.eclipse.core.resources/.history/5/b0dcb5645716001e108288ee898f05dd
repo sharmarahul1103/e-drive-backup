@@ -1,0 +1,30 @@
+package com.Security.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+import com.Security.Entity.UserInfo;
+import com.Security.Repository.UserRepository;
+
+@Service
+public class UserInfoService {
+	
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	public UserInfo findByUserName(String name)
+	{
+		return userRepository.findByusername(name);
+	}
+	
+	public UserInfo addUser(UserInfo userInfo)
+	{
+		return userRepository.save(userInfo);
+	}
+	
+	
+	
+
+}

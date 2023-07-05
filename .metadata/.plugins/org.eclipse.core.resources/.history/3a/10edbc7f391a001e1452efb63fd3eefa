@@ -1,0 +1,44 @@
+package com.redis.entity;
+
+import java.io.Serializable;
+
+import org.springframework.data.redis.serializer.RedisElementReader;
+import org.springframework.data.redis.serializer.RedisElementWriter;
+import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Student implements SerializationPair<Student> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue
+	private Integer id;
+	private String name;
+	private String course;
+	private String marks;
+	@Override
+	public RedisElementReader<Student> getReader() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public RedisElementWriter<Student> getWriter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

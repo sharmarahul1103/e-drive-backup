@@ -1,0 +1,30 @@
+package com.redis.repository;
+
+import java.util.List;
+
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.redis.entity.Product;
+
+@Repository
+public class ProductDao {
+	
+	private static final String HASH_KEY = "Product";
+	private RedisTemplate<String, Object> template;
+	
+	public Product save(Product product)
+	{
+		template.opsForHash().put("Product", product.getId(), product);
+	    return product;
+	
+	}
+	
+	public List<Product> getAllProducts()
+	{
+	 return 	template.opsForHash().values(HASH_KEY);
+	}
+	
+	
+
+}

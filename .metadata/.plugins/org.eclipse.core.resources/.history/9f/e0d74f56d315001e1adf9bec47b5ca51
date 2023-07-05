@@ -1,0 +1,15 @@
+package com.Security.Entity;
+
+
+
+public class Student {
+	
+	private Integer id;
+	
+	private String name;
+	
+	private String course;
+	
+	private String marks;
+
+}

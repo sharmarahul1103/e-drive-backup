@@ -1,0 +1,5 @@
+package com.kafka.EmailService.kafka;
+
+public class OrderConsumer {
+
+}

@@ -1,0 +1,5 @@
+package com.kafka.OrderService.Config;
+
+public class TopicCreator {
+
+}

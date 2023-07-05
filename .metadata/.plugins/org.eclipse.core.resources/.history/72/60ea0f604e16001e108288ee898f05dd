@@ -1,0 +1,62 @@
+package com.Security.Configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.Security.Entity.Roles;
+import com.Security.Entity.UserInfo;
+
+@Configuration
+@EnableWebSecurity
+public class Config {
+	
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
+	{
+		System.out.println("inside filters");
+		return httpSecurity.csrf(demo-> demo.disable()).authorizeHttpRequests(request->{
+			
+		 request.requestMatchers(HttpMethod.GET,"/test").hasRole("ADMIN");
+		 request.requestMatchers(HttpMethod.POST, "/addStudent").hasRole("ADMIN");
+		}).httpBasic(Customizer.withDefaults())
+		.build();
+	}
+	
+	@Bean
+	UserDetailsService userDetailsService()
+	{
+		
+//		UserInfo userInfo=UserInfo.builder().id(1).username("rahul").password(passwordEncoder().encode("1234")).role(Roles.ADMIN).build();
+//		System.out.println("Userdetails created-----"+userInfo.getUsername()+"--"+userInfo.getPassword()+"--"+userInfo.getRole());
+//		return new InMemoryUserDetailsManager(userInfo);
+		
+		UserDetails user=User.builder()
+				.username("rahul").
+				password(passwordEncoder().encode("1234"))
+				.roles("ADMIN")
+				.build();
+		System.out.println("Userdetails created-----"+user.getUsername()+"--"+user.getPassword()+"--"+user.getRole());
+		
+		return new InMemoryUserDetailsManager(user);
+		
+	}
+	
+	@Bean
+	PasswordEncoder passwordEncoder()
+	{
+		return new BCryptPasswordEncoder();
+	}
+
+	 
+}

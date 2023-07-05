@@ -1,0 +1,93 @@
+package com.Security.Configuration;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
+
+@Configuration
+@RequiredArgsConstructor
+public class ConfigDb {
+	
+	
+	private final CustomFilter customFilter;
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
+	
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
+	{
+		return httpSecurity.csrf(demo-> demo.disable())
+				.authorizeHttpRequests(request-> {
+			
+			//request.requestMatchers(HttpMethod.POST, "/authenticate").permitAll();
+			try {
+				request.requestMatchers(HttpMethod.POST, "/register").permitAll();
+				request.requestMatchers(HttpMethod.GET, "/test").permitAll().anyRequest()
+				.authenticated()
+				.and()
+				.sessionManagement(session-> {
+					session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+					.and()
+					.authenticationProvider(authenticationProvider())
+					.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
+				});
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			request.requestMatchers(HttpMethod.POST,"/addStudent").authenticated();
+		//	.and()
+		//	.authenticationProvider(AuthenticationProvider authenticationprovider)
+			//.addFilterBefore(customFilter,UsernamePasswordAuthenticationFilter.class);
+			
+			
+		})//.addFilterBefore(customFilter,UsernamePasswordAuthenticationFilter.class)
+				
+		   .build();
+	}
+	
+	@Bean
+	PasswordEncoder passwordEncoder()
+	{
+		return new BCryptPasswordEncoder();
+	}
+	
+	
+	
+	
+	
+	@Bean
+	AuthenticationProvider authenticationProvider()
+	{
+		DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
+		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		return daoAuthenticationProvider;
+	}
+	
+	
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception
+	{
+		return configuration.getAuthenticationManager();
+	}
+	
+	
+	
+
+}

@@ -1,0 +1,90 @@
+package com.Security.Configuration;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
+
+@Configuration
+@RequiredArgsConstructor
+public class ConfigDb {
+	@Autowired
+	 
+	private final CustomFilter customFilter;
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
+	
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
+	{
+		System.out.println("inside db filterchain");
+		return httpSecurity.csrf(demo-> demo.disable())
+				.authorizeHttpRequests(request-> {
+			
+			//request.requestMatchers(HttpMethod.POST, "/authenticate").permitAll();
+			try {
+				request.requestMatchers(HttpMethod.POST,"/addStudent").authenticated();
+				request.requestMatchers(HttpMethod.GET,"/demo").authenticated();
+				request.requestMatchers(HttpMethod.POST, "/register").permitAll();
+				request.requestMatchers(HttpMethod.GET, "/test").permitAll().anyRequest()
+				.authenticated();
+				
+//				
+				});
+			}
+			
+			
+			
+		
+				
+		   .build();
+	}
+	
+	@Bean
+	PasswordEncoder passwordEncoder()
+	{
+		return new BCryptPasswordEncoder();
+	}
+	
+	
+	
+	
+	
+	@Bean
+	AuthenticationProvider authenticationProvider()
+	{
+		System.out.println("inside auth provider");
+		DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
+		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		System.out.println("end of auth provider");
+		return daoAuthenticationProvider;
+	}
+	
+	
+	@Bean
+	AuthenticationManager authenticationManager() 
+	{
+		ProviderManager providerManager=new ProviderManager(authenticationProvider());
+	providerManager.authenticate(authentication);
+		return providerManager;
+	}
+	
+	
+	
+
+}

@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  mysqlsecurity:
+    image: mysql
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: mypassword
+        MYSQL_DATABASE: securitydb
+        MYSQL_USER: myuser
+        MYSQL_PASSWORD: mypassword
+    ports:
+      - 3304:3306
+  
+  

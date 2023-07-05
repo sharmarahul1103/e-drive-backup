@@ -1,0 +1,14 @@
+package com.redis.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.redis.repository.StudentRepo;
+
+public class StudentService {
+	
+	@Autowired
+	StudentRepo studentRepo;
+	
+	public 
+
+}

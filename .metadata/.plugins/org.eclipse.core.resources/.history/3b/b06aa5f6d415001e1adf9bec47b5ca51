@@ -1,0 +1,32 @@
+package com.Security.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Security.Entity.Student;
+import com.Security.Service.StudentService;
+
+@RestController
+public class MyController {
+	
+	@Autowired
+	StudentService studentService;
+	
+	@GetMapping("/test")
+	public String test()
+	{
+		return "hello from test";
+	}
+	
+	@PostMapping("/addStudent")
+	public ResponseEntity<Student> addStudent(@RequestBody Student student)
+	{
+	  Student s=studentService.saveStudent(student);
+	  return ResponseEntity.ok(s);
+	}
+
+}

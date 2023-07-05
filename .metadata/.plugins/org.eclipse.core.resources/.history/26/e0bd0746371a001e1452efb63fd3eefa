@@ -1,0 +1,22 @@
+server:
+  port: 8081
+spring:
+  datasource:
+        url: jdbc:mysql://localhost:3304/securitydb
+        username:  myuser
+        password: mypassword
+        driver-class-name:  com.mysql.cj.jdbc.Driver   
+  cache:
+    type: redis
+    redis:
+      time-to-live: 10S
+    cache-names:
+    - rediscache
+    
+  jpa:
+     show-sql: true
+     generate-ddl: true
+     properties: 
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQLDialect    

@@ -1,0 +1,11 @@
+package com.redis.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.redis.entity.Student;
+
+public interface StudentRepo extends JpaRepository<Student, Integer> {
+	
+	
+
+}
