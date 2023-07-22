@@ -10,4 +10,7 @@ class KafkaConsumerApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void test(){}
+
 }
