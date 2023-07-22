@@ -12,4 +12,7 @@ class KafkaConsumerApplicationTests {
 	
 	@Test
 	void test1(){}
+
+	@Test
+	void test(){}
 }
