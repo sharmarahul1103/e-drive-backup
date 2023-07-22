@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.consumer.kafka.KafkaProducer;
 
 @RestController
-@RequestMapping("/api/v1/kafka")
 public class MessageController {
 	
 	@Autowired
